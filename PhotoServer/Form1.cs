@@ -9,11 +9,14 @@ using System.Windows.Forms;
 
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using NLog;
 
 namespace PhotoServer
 {
     public partial class Form1 : Form
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         public Form1()
         {
             InitializeComponent();
@@ -85,7 +88,8 @@ namespace PhotoServer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string testJson = @"{
+            logger.Debug("ЖЖолрфив");
+            /*string testJson = @"{
                                     stend: 1,
                                     camera: 1,
                                     count: 2,
@@ -93,7 +97,7 @@ namespace PhotoServer
                                     id: 'id'
                                 }";
             PhotoShoot ph = PhotoShoot.Deserialize(testJson);
-            int h = ph.CameraId;
+            int h = ph.CameraId;*/
         }
     }
 }

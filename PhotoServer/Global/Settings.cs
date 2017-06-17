@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,8 @@ namespace PhotoServer
 {
     public class Settings
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+
         #region Описание шаблона "Одиночка"
 
         private static Settings instance = null;
@@ -28,6 +31,7 @@ namespace PhotoServer
         {
             try
             {
+
                 // Сохранение в файл
                 /*XmlSerializer serializer = new XmlSerializer(typeof(Settings));
                 FileStream stream = new FileStream(Variables.SettigsFile, FileMode.Create);
@@ -46,7 +50,7 @@ namespace PhotoServer
             }
             catch (Exception e)
             {
-                
+                logger.Error(e);
             }
         }
 
