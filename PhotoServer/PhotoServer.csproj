@@ -64,8 +64,11 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
-    <Compile Include="Global\PhotoShoot.cs" />
-    <Compile Include="Global\RabbitMqClient.cs" />
+    <Compile Include="Global\Delegates.cs" />
+    <Compile Include="PhotoShoot\PhotoShoot.cs" />
+    <Compile Include="Net\RabbitMqClient.cs" />
+    <Compile Include="PhotoShoot\RabbitMqPhotoShootQueue.cs" />
+    <Compile Include="PhotoShoot\IPhotoShootQueue.cs" />
     <Compile Include="Settings\RabbitMqSettings.cs" />
     <Compile Include="Settings\Settings.cs" />
     <Compile Include="Global\Variables.cs" />

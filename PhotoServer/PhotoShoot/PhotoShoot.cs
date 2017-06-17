@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace PhotoServer
+namespace PhotoServer.PhotoShoot
 {
     public class PhotoShoot
     {

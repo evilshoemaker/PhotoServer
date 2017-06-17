@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PhotoServer
+namespace PhotoServer.PhotoShoot
 {
-    public class RabbitMqClient
+    public interface IPhotoShootQueue
     {
-
-
+        event PhotoShootDelegate NewTask;
     }
 }

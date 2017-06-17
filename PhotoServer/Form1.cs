@@ -51,46 +51,15 @@ namespace PhotoServer
             }
         }
 
-
-        EventingBasicConsumer consumer;
-        private void test()
-        {
-            var factory = new ConnectionFactory();
-            factory.UserName = "test";
-            factory.Password = "test";
-            factory.VirtualHost = "/";
-            factory.Protocol = Protocols.DefaultProtocol;
-            factory.HostName = "192.168.0.40";
-            factory.Port = AmqpTcpEndpoint.UseDefaultPort;
-            using (var connection = factory.CreateConnection())
-            using (var channel = connection.CreateModel())
-            {
-                channel.QueueDeclare(queue: "hello",
-                                     durable: false,
-                                     exclusive: false,
-                                     autoDelete: false,
-                                     arguments: null);
-
-                consumer = new EventingBasicConsumer(channel);
-                consumer.Received += (model, ea) =>
-                {
-                    var body = ea.Body;
-                    var message = Encoding.UTF8.GetString(body);
-                    Console.WriteLine(" [x] Received {0}", message);
-                };
-                channel.BasicConsume(queue: "hello",
-                                     noAck: true,
-                                     consumer: consumer);
-
-                Console.WriteLine(" Press [enter] to exit.");
-            }
-        }
-
         private void button2_Click(object sender, EventArgs e)
         {
             logger.Debug("ЖЖолрфив");
-            Settings.Settings settings = Settings.Settings.Instance;
+            /*Settings.Settings settings = Settings.Settings.Instance;
             settings.SaveSettings();
+
+            RabbitMqClient client = new RabbitMqClient(settings.RabbitMq);
+            client.Connect();*/
+
             /*string testJson = @"{
                                     stend: 1,
                                     camera: 1,
