@@ -89,6 +89,8 @@ namespace PhotoServer
         private void button2_Click(object sender, EventArgs e)
         {
             logger.Debug("ЖЖолрфив");
+            Settings.Settings settings = Settings.Settings.Instance;
+            settings.SaveSettings();
             /*string testJson = @"{
                                     stend: 1,
                                     camera: 1,
