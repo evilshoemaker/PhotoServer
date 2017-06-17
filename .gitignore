@@ -2,7 +2,7 @@
 # Данный GITIGNORE-файл был автоматически создан Microsoft(R) Visual Studio.
 ################################################################################
 
-/packages/RabbitMQ.Client.4.1.3
+/packages/
 /PhotoServer/bin
 /PhotoServer/obj
 /.vs/PhotoServer/v14

@@ -85,7 +85,15 @@ namespace PhotoServer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            test();
+            string testJson = @"{
+                                    stend: 1,
+                                    camera: 1,
+                                    count: 2,
+                                    delay: 34,
+                                    id: 'id'
+                                }";
+            PhotoShoot ph = PhotoShoot.Deserialize(testJson);
+            int h = ph.CameraId;
         }
     }
 }
