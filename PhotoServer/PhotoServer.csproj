@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\CameraDisconnectException.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -65,8 +66,10 @@
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
     <Compile Include="Global\Delegates.cs" />
+    <Compile Include="PhotoShoot\PhotoDisconnect.cs" />
     <Compile Include="PhotoShoot\PhotoShoot.cs" />
     <Compile Include="Net\RabbitMqClient.cs" />
+    <Compile Include="PhotoShoot\PhotoStop.cs" />
     <Compile Include="PhotoShoot\RabbitMqPhotoShootQueue.cs" />
     <Compile Include="PhotoShoot\IPhotoShootQueue.cs" />
     <Compile Include="Settings\RabbitMqSettings.cs" />

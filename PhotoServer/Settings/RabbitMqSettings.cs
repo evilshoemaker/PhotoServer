@@ -13,6 +13,9 @@ namespace PhotoServer.Settings
         private string password = "test";
         private string virtualHost = "/";
         private string hostName = "localhost";
+        private string queue = "PHOTO_SHOOT";
+        private string cameraDisconnectQueue = "PHOTO_DISCONNECT";
+        private string photoStopQueue = "PHOTO_STOP";
 
         [JsonProperty("userName")]
         public string UserName
@@ -40,6 +43,27 @@ namespace PhotoServer.Settings
         {
             get { return hostName; }
             set { hostName = value; }
+        }
+
+        [JsonProperty("queue")]
+        public string Queue
+        {
+            get { return queue; }
+            set { queue = value; }
+        }
+
+        [JsonProperty("cameraDisconnectQueue")]
+        public string CameraDisconnectQueue
+        {
+            get { return cameraDisconnectQueue; }
+            set { cameraDisconnectQueue = value; }
+        }
+
+        [JsonProperty("photoStopQueue")]
+        public string PhotoStopQueue
+        {
+            get { return photoStopQueue; }
+            set { photoStopQueue = value; }
         }
     }
 }

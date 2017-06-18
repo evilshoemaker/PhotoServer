@@ -8,6 +8,6 @@ namespace PhotoServer.PhotoShoot
 {
     public interface IPhotoShootQueue
     {
-        event PhotoShootDelegate NewTask;
+        event PhotoShootDelegate NewPhotoShoot;
     }
 }
