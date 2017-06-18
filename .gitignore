@@ -6,3 +6,5 @@
 /PhotoServer/bin
 /PhotoServer/obj
 /.vs/PhotoServer/v14
+/EDSDKLib/obj/
+/EDSDKLib/bin/
