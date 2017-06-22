@@ -11,5 +11,15 @@ namespace PhotoServer
     {
         public static readonly string AppDir = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
         public static readonly string SettigsFile = AppDir + "\\settings.json";
+
+        private static readonly string photoTestDir = AppDir + "\\Photo";
+        public static string PhotoTestDir
+        {
+            get {
+                Utilits.CreateDirIfNotExist(photoTestDir);
+                return photoTestDir;
+            }
+
+        }
     }
 }

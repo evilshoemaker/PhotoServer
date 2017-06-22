@@ -20,9 +20,9 @@ namespace PhotoServer.PhotoShoot
         private IConnection connection;
         private IModel channel;
 
-        Settings.RabbitMqSettings settings;
+        RabbitMqSettings settings;
 
-        public RabbitMqPhotoShootQueue(Settings.RabbitMqSettings settings)
+        public RabbitMqPhotoShootQueue(RabbitMqSettings settings)
         {
             this.settings = settings;
             factory = new ConnectionFactory();
@@ -101,7 +101,7 @@ namespace PhotoServer.PhotoShoot
             }
         }
 
-        public static bool SafetySend(string queue, string message, Settings.RabbitMqSettings settings)
+        public static bool SafetySend(string queue, string message, RabbitMqSettings settings)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace PhotoServer.PhotoShoot
             }
         }
 
-        public static void Send(string queue, string message, Settings.RabbitMqSettings settings)
+        public static void Send(string queue, string message, RabbitMqSettings settings)
         {
             ConnectionFactory factory = new ConnectionFactory();
             factory.UserName = settings.UserName;

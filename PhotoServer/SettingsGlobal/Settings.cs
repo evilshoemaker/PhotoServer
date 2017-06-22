@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace PhotoServer.Settings
+namespace PhotoServer
 {
     public class Settings
     {
@@ -40,6 +40,19 @@ namespace PhotoServer.Settings
         {
             get { return rabbitMq; }
             set { rabbitMq = value; }
+        }
+
+        private string imageDirectory = Variables.PhotoTestDir;
+
+        [JsonProperty("imageDirectory")]
+        public string ImageDirectory
+        {
+            get
+            {
+                Utilits.CreateDirIfNotExist(imageDirectory);
+                return imageDirectory;
+            }
+            set { imageDirectory = value; }
         }
 
         #endregion
