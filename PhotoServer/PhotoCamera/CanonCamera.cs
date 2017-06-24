@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using PhotoServer.Exceptions;
 
 namespace PhotoServer.PhotoCamera
 {
@@ -14,21 +15,28 @@ namespace PhotoServer.PhotoCamera
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
+        public event VoidDelegate NewCameraConnected;
+        private string lastPhotoFileName = "";
+
         private CanonAPI apiHandler;
         //private Camera mainCamera;
         private ManualResetEvent waitEvent = new ManualResetEvent(false);
         List<Camera> cameras = new List<Camera>();
+
+        public string LastPhotoFileName
+        {
+            get { return lastPhotoFileName;}
+        }
 
         public CanonCamera()
         {
             apiHandler = new CanonAPI();
             apiHandler.CameraAdded += CameraAdded;
             cameras.AddRange(apiHandler.GetCameraList());
-            OpenSession();
-            logger.Info("Camera API init");
+            //OpenSession();
         }
 
-        public void DisposeHelper()
+        public void Dispose()
         {
             foreach (Camera camera in cameras)
             {
@@ -56,7 +64,32 @@ namespace PhotoServer.PhotoCamera
             waitEvent.WaitOne();
         }
 
-        private void OpenSession()
+        public void TakePhoto(int id)
+        {
+            if (cameras.Count == 0)
+            {
+                logger.Error("Active cameras not found");
+                return;
+            }
+
+            if (cameras.Count < id | id == 0)
+            {
+                throw new CameraDisconnectException("Camera not found");
+            }
+
+            Camera mainCamera = cameras[id - 1];
+            mainCamera.SetSetting(PropertyID.SaveTo, (int)SaveTo.Host);
+            mainCamera.SetCapacity(4096, int.MaxValue);
+
+            logger.Info("Taking photo with current settings...");
+            CameraValue tv = TvValues.GetValue(mainCamera.GetInt32Setting(PropertyID.Tv));
+            if (tv == TvValues.Bulb) mainCamera.TakePhotoBulb(2);
+            else mainCamera.TakePhoto();
+            waitEvent.WaitOne();
+            return 
+        }
+
+        public void OpenSession()
         {
             foreach (Camera camera in cameras)
             {
@@ -65,6 +98,22 @@ namespace PhotoServer.PhotoCamera
                 camera.OpenSession();
                 logger.Info($"Opened session with camera: {camera.DeviceName}");
             }
+            logger.Info("Camera API init");
+        }
+
+        public List<string> GetCameraStringList()
+        {
+            List<string> result = new List<string>();
+            int index = 1;
+            foreach (Camera camera in cameras)
+            {
+                string item = "";
+                item += "ID: " + index + "; ";  
+                item += "Name: " + camera.DeviceName + "; ";
+                result.Add(item);
+                index++;
+            }
+            return result;
         }
 
         private void CameraAdded(CanonAPI sender)
@@ -91,6 +140,7 @@ namespace PhotoServer.PhotoCamera
                 }
                 finally { waitEvent.Set(); }
             }
+            NewCameraConnected?.Invoke();
         }
 
         private void CameraHasShutdown(Camera sender)
@@ -108,6 +158,7 @@ namespace PhotoServer.PhotoCamera
                 logger.Error(ex);
             }
             finally { waitEvent.Set(); }
+            NewCameraConnected?.Invoke();
         }
 
         private void DownloadReady(Camera sender, DownloadInfo info)
@@ -117,6 +168,7 @@ namespace PhotoServer.PhotoCamera
                 logger.Info("Starting image download...");
                 sender.DownloadFile(info, Variables.PhotoTestDir);
                 logger.Info("Photo taken and saved");
+                lastPhotoFileName = info.FileName;
             }
             catch (Exception ex)
             {

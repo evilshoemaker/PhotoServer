@@ -80,6 +80,7 @@
     </Compile>
     <Compile Include="PhotoShoot\PhotoDisconnect.cs" />
     <Compile Include="PhotoShoot\PhotoShoot.cs" />
+    <Compile Include="PhotoShoot\PhotoShootQueue.cs" />
     <Compile Include="PhotoShoot\PhotoStop.cs" />
     <Compile Include="PhotoShoot\RabbitMqPhotoShootQueue.cs" />
     <Compile Include="PhotoShoot\IPhotoShootQueue.cs" />

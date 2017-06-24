@@ -17,11 +17,12 @@ namespace PhotoServer
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
 
-        private PhotoCamera.CanonCamera cameraHelper;
+        PhotoShoot.PhotoShootQueue photoShootQueue;
 
         public MainForm()
         {
             InitializeComponent();
+            photoShootQueue = new PhotoShoot.PhotoShootQueue();
         }
 
         private void SetupRichTextBoxLogger()
@@ -50,22 +51,28 @@ namespace PhotoServer
             virtualHostTextBox.Text = Settings.Instance.RabbitMq.VirtualHost;
         }
 
+        private void GetCameraList()
+        {
+            camerasTextBox.Text = string.Join("\r\n", photoShootQueue.CameraHelper.GetCameraStringList());
+        }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             SetupRichTextBoxLogger();
             LoadSettings();
-
-            cameraHelper = new PhotoCamera.CanonCamera();
+            photoShootQueue.Connect();
+            photoShootQueue.CameraHelper.NewCameraConnected += GetCameraList;
         }
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            cameraHelper.TakePhoto();
+            //cameraHelper.TakePhoto();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            cameraHelper.DisposeHelper();
+            //cameraHelper.DisposeHelper();
+            //rabbitMqClient.Close();
             Settings.Instance.SaveSettings();
             Application.Exit();
         }
@@ -100,6 +107,19 @@ namespace PhotoServer
         private void virtualHostTextBox_TextChanged(object sender, EventArgs e)
         {
             Settings.Instance.RabbitMq.VirtualHost = virtualHostTextBox.Text;
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            int id = Int32.Parse(textBox1.Text);
+            try
+            {
+                cameraHelper.TakePhoto(id);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.Message);
+            }
         }
     }
 }

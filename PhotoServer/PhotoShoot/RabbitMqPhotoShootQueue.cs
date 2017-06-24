@@ -41,6 +41,7 @@ namespace PhotoServer.PhotoShoot
             channel = connection.CreateModel();
 
             InitBasicConsume();
+            logger.Info("RabbitMq client connect");
         }
 
         public void Close()

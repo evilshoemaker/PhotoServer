@@ -70,5 +70,10 @@ namespace PhotoServer
             PhotoShoot ph = PhotoShoot.Deserialize(testJson);
             int h = ph.CameraId;*/
         }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
