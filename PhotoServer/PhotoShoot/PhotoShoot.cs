@@ -14,6 +14,7 @@ namespace PhotoServer.PhotoShoot
         private int count;
         private int delay;
         private string photoId;
+        private DataPhotoShoot data;
 
         [JsonProperty("stend")]
         public int Stend
@@ -50,14 +51,38 @@ namespace PhotoServer.PhotoShoot
             set { photoId = value; }
         }
 
+        public DataPhotoShoot Data
+        {
+            get { return data; }
+            set { data = value; }
+        }
+
         public static PhotoShoot Deserialize(string json)
         {
-            return JsonConvert.DeserializeObject<PhotoShoot>(json);
+            PhotoShoot photoShoot = JsonConvert.DeserializeObject<PhotoShoot>(json);
+            if (photoShoot.Data != null)
+            {
+                photoShoot.PhotoId = photoShoot.Data.Qr;
+            }
+
+            return photoShoot;
         }
 
         public string Json()
         {
             return JsonConvert.SerializeObject(this);
+        }
+    }
+
+    public class DataPhotoShoot
+    {
+        private string qr = "";
+
+        [JsonProperty("qr")]
+        public string Qr
+        {
+            get { return qr; }
+            set { qr = value; }
         }
     }
 }
