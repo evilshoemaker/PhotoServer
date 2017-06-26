@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.requeueCheckBox = new System.Windows.Forms.CheckBox();
             this.virtualHostTextBox = new System.Windows.Forms.TextBox();
             this.hostNameTextBox = new System.Windows.Forms.TextBox();
             this.passwordTextBox = new System.Windows.Forms.TextBox();
@@ -40,26 +41,29 @@
             this.LogRichTextBox = new System.Windows.Forms.RichTextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.clearLogButton = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.camerasTextBox = new System.Windows.Forms.TextBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.imageSubfolderCheckBox = new System.Windows.Forms.CheckBox();
             this.selectImageDirButton = new System.Windows.Forms.Button();
             this.imageDirectoryTextBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.camerasTextBox = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button2 = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            this.groupBox3.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.groupBox3.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.requeueCheckBox);
             this.groupBox1.Controls.Add(this.virtualHostTextBox);
             this.groupBox1.Controls.Add(this.hostNameTextBox);
             this.groupBox1.Controls.Add(this.passwordTextBox);
@@ -74,6 +78,17 @@
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "RabbitMQ";
+            // 
+            // requeueCheckBox
+            // 
+            this.requeueCheckBox.AutoSize = true;
+            this.requeueCheckBox.Location = new System.Drawing.Point(9, 123);
+            this.requeueCheckBox.Name = "requeueCheckBox";
+            this.requeueCheckBox.Size = new System.Drawing.Size(144, 17);
+            this.requeueCheckBox.TabIndex = 6;
+            this.requeueCheckBox.Text = "Requeue (not done task)";
+            this.requeueCheckBox.UseVisualStyleBackColor = true;
+            this.requeueCheckBox.CheckedChanged += new System.EventHandler(this.requeueCheckBox_CheckedChanged);
             // 
             // virtualHostTextBox
             // 
@@ -189,6 +204,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.clearLogButton);
             this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.textBox1);
             this.splitContainer1.Panel1.Controls.Add(this.groupBox4);
@@ -203,16 +219,78 @@
             this.splitContainer1.SplitterDistance = 313;
             this.splitContainer1.TabIndex = 5;
             // 
+            // clearLogButton
+            // 
+            this.clearLogButton.Location = new System.Drawing.Point(761, 281);
+            this.clearLogButton.Name = "clearLogButton";
+            this.clearLogButton.Size = new System.Drawing.Size(75, 23);
+            this.clearLogButton.TabIndex = 6;
+            this.clearLogButton.Text = "Clear log";
+            this.clearLogButton.UseVisualStyleBackColor = true;
+            this.clearLogButton.Click += new System.EventHandler(this.clearLogButton_Click);
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(537, 248);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 23);
+            this.button2.TabIndex = 5;
+            this.button2.Text = "TakePhoto";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(431, 250);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(100, 20);
+            this.textBox1.TabIndex = 4;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.camerasTextBox);
+            this.groupBox4.Location = new System.Drawing.Point(383, 9);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(373, 85);
+            this.groupBox4.TabIndex = 3;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Connected cameras";
+            // 
+            // camerasTextBox
+            // 
+            this.camerasTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.camerasTextBox.Location = new System.Drawing.Point(6, 19);
+            this.camerasTextBox.Multiline = true;
+            this.camerasTextBox.Name = "camerasTextBox";
+            this.camerasTextBox.ReadOnly = true;
+            this.camerasTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.camerasTextBox.Size = new System.Drawing.Size(361, 60);
+            this.camerasTextBox.TabIndex = 0;
+            // 
             // groupBox3
             // 
+            this.groupBox3.Controls.Add(this.imageSubfolderCheckBox);
             this.groupBox3.Controls.Add(this.selectImageDirButton);
             this.groupBox3.Controls.Add(this.imageDirectoryTextBox);
             this.groupBox3.Location = new System.Drawing.Point(3, 170);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(374, 48);
+            this.groupBox3.Size = new System.Drawing.Size(374, 74);
             this.groupBox3.TabIndex = 2;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Image directory";
+            // 
+            // imageSubfolderCheckBox
+            // 
+            this.imageSubfolderCheckBox.AutoSize = true;
+            this.imageSubfolderCheckBox.Location = new System.Drawing.Point(6, 46);
+            this.imageSubfolderCheckBox.Name = "imageSubfolderCheckBox";
+            this.imageSubfolderCheckBox.Size = new System.Drawing.Size(101, 17);
+            this.imageSubfolderCheckBox.TabIndex = 8;
+            this.imageSubfolderCheckBox.Text = "Image subfolder";
+            this.imageSubfolderCheckBox.UseVisualStyleBackColor = true;
+            this.imageSubfolderCheckBox.CheckedChanged += new System.EventHandler(this.imageSubfolderCheckBox_CheckedChanged);
             // 
             // selectImageDirButton
             // 
@@ -243,47 +321,6 @@
             this.button1.TabIndex = 1;
             this.button1.Text = "TakePhoto";
             this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click_1);
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.camerasTextBox);
-            this.groupBox4.Location = new System.Drawing.Point(4, 225);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(373, 85);
-            this.groupBox4.TabIndex = 3;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "Connected cameras";
-            // 
-            // camerasTextBox
-            // 
-            this.camerasTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.camerasTextBox.Location = new System.Drawing.Point(6, 19);
-            this.camerasTextBox.Multiline = true;
-            this.camerasTextBox.Name = "camerasTextBox";
-            this.camerasTextBox.ReadOnly = true;
-            this.camerasTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.camerasTextBox.Size = new System.Drawing.Size(361, 60);
-            this.camerasTextBox.TabIndex = 0;
-            // 
-            // textBox1
-            // 
-            this.textBox1.Location = new System.Drawing.Point(591, 43);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(100, 20);
-            this.textBox1.TabIndex = 4;
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(697, 41);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "TakePhoto";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // MainForm
             // 
@@ -303,10 +340,10 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.groupBox3.ResumeLayout(false);
+            this.groupBox3.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -333,5 +370,8 @@
         private System.Windows.Forms.TextBox camerasTextBox;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.CheckBox requeueCheckBox;
+        private System.Windows.Forms.Button clearLogButton;
+        private System.Windows.Forms.CheckBox imageSubfolderCheckBox;
     }
 }

@@ -16,6 +16,7 @@ namespace PhotoServer
         private string queue = "PHOTO_SHOOT";
         private string cameraDisconnectQueue = "PHOTO_DISCONNECT";
         private string photoStopQueue = "PHOTO_STOP";
+        private bool requeue = false;
 
         [JsonProperty("userName")]
         public string UserName
@@ -43,6 +44,13 @@ namespace PhotoServer
         {
             get { return hostName; }
             set { hostName = value; }
+        }
+
+        [JsonProperty("requeue")]
+        public bool Requeue
+        {
+            get { return requeue; }
+            set { requeue = value; }
         }
 
         [JsonProperty("queue")]

@@ -55,6 +55,15 @@ namespace PhotoServer
             set { imageDirectory = value; }
         }
 
+        private bool isImageSubfolder = false;
+
+        [JsonProperty("isImageSubfolder")]
+        public bool IsImageSubfolder
+        {
+            get { return isImageSubfolder; }
+            set { isImageSubfolder = value; }
+        }
+
         #endregion
 
         #region Методы

@@ -49,6 +49,8 @@ namespace PhotoServer
             passwordTextBox.Text = Settings.Instance.RabbitMq.Password;
             hostNameTextBox.Text = Settings.Instance.RabbitMq.HostName;
             virtualHostTextBox.Text = Settings.Instance.RabbitMq.VirtualHost;
+            requeueCheckBox.Checked = Settings.Instance.RabbitMq.Requeue;
+            imageSubfolderCheckBox.Checked = Settings.Instance.IsImageSubfolder;
         }
 
         private void GetCameraList()
@@ -62,17 +64,12 @@ namespace PhotoServer
             LoadSettings();
             photoShootQueue.Connect();
             photoShootQueue.CameraHelper.NewCameraConnected += GetCameraList;
-        }
-
-        private void button1_Click_1(object sender, EventArgs e)
-        {
-            //cameraHelper.TakePhoto();
+            GetCameraList();
         }
 
         private void MainForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            //cameraHelper.DisposeHelper();
-            //rabbitMqClient.Close();
+            photoShootQueue.Dispose();
             Settings.Instance.SaveSettings();
             Application.Exit();
         }
@@ -111,15 +108,31 @@ namespace PhotoServer
 
         private void button2_Click(object sender, EventArgs e)
         {
-            int id = Int32.Parse(textBox1.Text);
-            try
+            photoShootQueue.Test();
+            //int id = Int32.Parse(textBox1.Text);
+            /*try
             {
                 cameraHelper.TakePhoto(id);
             }
             catch (Exception ex)
             {
                 logger.Error(ex.Message);
-            }
+            }*/
+        }
+
+        private void requeueCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.RabbitMq.Requeue = requeueCheckBox.Checked;
+        }
+
+        private void clearLogButton_Click(object sender, EventArgs e)
+        {
+            LogRichTextBox.Text = "";
+        }
+
+        private void imageSubfolderCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Settings.Instance.IsImageSubfolder = imageSubfolderCheckBox.Checked;
         }
     }
 }

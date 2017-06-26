@@ -54,5 +54,10 @@ namespace PhotoServer.PhotoShoot
         {
             return JsonConvert.DeserializeObject<PhotoShoot>(json);
         }
+
+        public string Json()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
     }
 }

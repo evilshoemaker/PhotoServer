@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using PhotoServer.Exceptions;
+using System.IO;
 
 namespace PhotoServer.PhotoCamera
 {
@@ -17,6 +18,7 @@ namespace PhotoServer.PhotoCamera
 
         public event VoidDelegate NewCameraConnected;
         private string lastPhotoFileName = "";
+        private string photoShootId = "";
 
         private CanonAPI apiHandler;
         //private Camera mainCamera;
@@ -64,20 +66,20 @@ namespace PhotoServer.PhotoCamera
             waitEvent.WaitOne();
         }
 
-        public void TakePhoto(int id)
+        /*public void TakePhoto(PhotoShoot.PhotoShoot photoShoot)
         {
             if (cameras.Count == 0)
             {
-                logger.Error("Active cameras not found");
-                return;
+                throw new CameraDisconnectException("Active cameras not found");
             }
 
-            if (cameras.Count < id | id == 0)
+            if (cameras.Count < photoShoot.CameraId | photoShoot.CameraId == 0)
             {
                 throw new CameraDisconnectException("Camera not found");
             }
 
-            Camera mainCamera = cameras[id - 1];
+            photoShootId = photoShoot.PhotoId;
+            Camera mainCamera = cameras[photoShoot.CameraId - 1];
             mainCamera.SetSetting(PropertyID.SaveTo, (int)SaveTo.Host);
             mainCamera.SetCapacity(4096, int.MaxValue);
 
@@ -86,7 +88,42 @@ namespace PhotoServer.PhotoCamera
             if (tv == TvValues.Bulb) mainCamera.TakePhotoBulb(2);
             else mainCamera.TakePhoto();
             waitEvent.WaitOne();
-            return 
+        }*/
+
+        public List<string> TakePhoto(PhotoShoot.PhotoShoot photoShoot)
+        {
+            if (cameras.Count == 0)
+            {
+                throw new CameraDisconnectException("Active cameras not found");
+            }
+
+            if (cameras.Count < photoShoot.CameraId | photoShoot.CameraId == 0)
+            {
+                throw new CameraDisconnectException("Camera not found");
+            }
+
+            photoShootId = photoShoot.PhotoId;
+            Camera mainCamera = cameras[photoShoot.CameraId - 1];
+            mainCamera.SetSetting(PropertyID.SaveTo, (int)SaveTo.Host);
+            mainCamera.SetCapacity(4096, int.MaxValue);
+
+            logger.Info("Taking photo with current settings...");
+
+            List<string> list = new List<string>();
+
+            for (int i = 0; i < photoShoot.Count; i++)
+            {
+                CameraValue tv = TvValues.GetValue(mainCamera.GetInt32Setting(PropertyID.Tv));
+                if (tv == TvValues.Bulb) mainCamera.TakePhotoBulb(2);
+                else mainCamera.TakePhoto();
+
+                waitEvent.Reset();
+                waitEvent.WaitOne();
+                
+                list.Add(lastPhotoFileName);
+            }
+
+            return list;
         }
 
         public void OpenSession()
@@ -161,12 +198,25 @@ namespace PhotoServer.PhotoCamera
             NewCameraConnected?.Invoke();
         }
 
+        private int GetCameraId(Camera sender)
+        {
+            return cameras.FindIndex(x => x.ID == sender.ID) + 1;
+        }
+
         private void DownloadReady(Camera sender, DownloadInfo info)
         {
             try
             {
+                string extension = Path.GetExtension(info.FileName);
+                string fileName = "CAMERA_" + GetCameraId(sender) + extension;
+                string dir = Settings.Instance.ImageDirectory;
+                if (Settings.Instance.IsImageSubfolder)
+                    dir = Path.Combine(dir, photoShootId);
+                Utilits.CreateDirIfNotExist(dir);
+
                 logger.Info("Starting image download...");
-                sender.DownloadFile(info, Variables.PhotoTestDir);
+                info.FileName = Utilits.NextFileName(dir, fileName);
+                sender.DownloadFile(info, dir);
                 logger.Info("Photo taken and saved");
                 lastPhotoFileName = info.FileName;
             }

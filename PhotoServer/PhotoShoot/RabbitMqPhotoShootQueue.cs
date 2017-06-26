@@ -88,7 +88,8 @@ namespace PhotoServer.PhotoShoot
             }
             catch (CameraDisconnectException ex)
             {
-                channel.BasicNack(deliveryTag: e.DeliveryTag, multiple: false, requeue: true);
+                logger.Error(ex.Message + " Stend: " + photoShoot.Stend + "; Camera: " + photoShoot.CameraId);
+                channel.BasicNack(deliveryTag: e.DeliveryTag, multiple: false, requeue: settings.Requeue);
                 if (photoShoot != null)
                 {
                     PhotoDisconnect photoDisconnect = new PhotoDisconnect(stend: photoShoot.Stend, camera: photoShoot.CameraId);
@@ -98,7 +99,7 @@ namespace PhotoServer.PhotoShoot
             catch (Exception ex)
             {
                 logger.Error(ex);
-                channel.BasicNack(deliveryTag: e.DeliveryTag, multiple: false, requeue: true);
+                channel.BasicNack(deliveryTag: e.DeliveryTag, multiple: false, requeue: settings.Requeue);
             }
         }
 

@@ -36,7 +36,7 @@ namespace PhotoServer.PhotoShoot
             }
             catch (Exception ex)
             {
-                logger.Error(ex);
+                logger.Error(ex.Message);
             }
         }
 
@@ -65,12 +65,22 @@ namespace PhotoServer.PhotoShoot
 
         private void OnNewPhotoShoot(PhotoShoot photoShoot)
         {
+            logger.Info("Start photo shoot. " + photoShoot.Json());
             PhotoStop photoStop = new PhotoStop();
-            for (int i = 0; i < photoShoot.Count; i++)
+            photoStop.CameraId = photoShoot.CameraId;
+            photoStop.Stend = photoShoot.Stend;
+            photoStop.Id = photoShoot.PhotoId;
+
+            photoStop.Images = cameraHelper.TakePhoto(photoShoot);
+
+            /*for (int i = 0; i < photoShoot.Count; i++)
             {
-                cameraHelper.TakePhoto(photoShoot.CameraId);
+                cameraHelper.TakePhoto(photoShoot);
                 photoStop.Images.Add(cameraHelper.LastPhotoFileName);
-            }
+            }*/
+
+            RabbitMqPhotoShootQueue.Send(Settings.Instance.RabbitMq.PhotoStopQueue, photoStop.Json(), Settings.Instance.RabbitMq);
+            logger.Info("Photo shoot end. " + photoStop.Json());
         }
     }
 }
