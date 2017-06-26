@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 
 namespace PhotoServer.PhotoShoot
 {
@@ -71,13 +72,14 @@ namespace PhotoServer.PhotoShoot
             photoStop.Stend = photoShoot.Stend;
             photoStop.Id = photoShoot.PhotoId;
 
-            photoStop.Images = cameraHelper.TakePhoto(photoShoot);
-
-            /*for (int i = 0; i < photoShoot.Count; i++)
+            if (photoShoot.Delay > 0)
             {
-                cameraHelper.TakePhoto(photoShoot);
-                photoStop.Images.Add(cameraHelper.LastPhotoFileName);
-            }*/
+                logger.Info("Delay " + photoShoot.Delay + " sec");
+                Thread.Sleep(photoShoot.Delay * 1000);
+            }
+            
+
+            photoStop.Images = cameraHelper.TakePhoto(photoShoot);
 
             RabbitMqPhotoShootQueue.Send(Settings.Instance.RabbitMq.PhotoStopQueue, photoStop.Json(), Settings.Instance.RabbitMq);
             logger.Info("Photo shoot end. " + photoStop.Json());
